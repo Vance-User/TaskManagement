@@ -1,64 +1,77 @@
-const express = require("express");         // imports the Express framework
-const bodyParser = require("body-parser");  //imports body-parser, a middleware that helps parse incoming request bodies.
+const express = require("express");         // Imports the Express framework
+const bodyParser = require("body-parser");  // Imports body-parser to parse incoming request bodies
 
-const app = express(); //app variable represents your Express server
-const port = 3000;  //sets the port number
+const app = express(); 
+const port = 3000;  // Sets the port number
 
+// ✅ Middleware - Configures Express to use necessary features
+app.use(bodyParser.urlencoded({ extended: true })); // Parses form data
+app.use(bodyParser.json()); // ✅ Supports JSON request bodies (important for PUT/PATCH)
+app.use(express.static("public")); // Serves static files (CSS, images, etc.)
+app.set("view engine", "ejs"); // Uses EJS templating engine
 
-
-
-
-// Middleware
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static("public"));
-app.set("view engine", "ejs");
-
-// Temporary in-memory storage for tasks stored in an array 
+// ✅ In-Memory Storage for Tasks
 let tasks = [];
 
 // ✅ GET / - Display the main page with tasks list and add form
-app.get("/", (req, res) => {                                        //Displays the task list
-    res.render("index", { tasks });                                 //res.render("index", { tasks })
+app.get("/", (req, res) => {                                        
+    res.render("index", { tasks });  // Renders the index.ejs file with task data
 });
 
-                                                                    /*This handles requests to the root (/) URL.
-                                                                    res.render("index", { tasks }):
-                                                                    It renders the index.ejs file (a template file).
-                                                                    The { tasks } object is passed to index.ejs, so the template can dynamically display all tasks.*/
-
-app.post("/add-task", (req, res) => {                             //This route handles form submissions when users add a new task.
-                                                                 //req.body contains form data from the POST request.
-    const { title, description, priority } = req.body;          //Extracts title, description, and priority from the form submission.
+// ✅ POST /add-task - Add a New Task
+app.post("/add-task", (req, res) => {                             
+    const { title, description, priority } = req.body;          
     const newTask = {
-        id: tasks.length + 1,                                  // Simple unique ID
-        title,                                                //Task title from the form.
-        description,                                         //Task description from the form.
-        completed: false,                                   //Tasks start as not completed.
-        priority: priority || 'normal'                     // Default to 'normal' if no priority is selected
+        id: tasks.length + 1,  // Generates a unique ID
+        title,                
+        description,          
+        completed: false,     
+        priority: priority || 'normal' // Default to 'normal' if no priority is selected
     };
-    tasks.push(newTask);                                    //Adds the new task to the tasks array (stored in memory).
-    res.redirect("/");                                     // After adding the task, it redirects the user back to the homepage (/) so they can see the updated task list.
+    tasks.push(newTask);  // Adds the new task to the tasks array
+    res.redirect("/");  // Refreshes the page to show the updated task list
 });
 
-
-// ✅ POST /toggle-task/:id - Toggle task completed status
-app.post("/toggle-task/:id", (req, res) => {                    //Defines a POST request for /toggle-task/:id.
-                                                               //:id is a route parameter that represents the ID of the task.
+// ✅ PATCH /toggle-task/:id - Toggle Completed Status
+app.patch("/toggle-task/:id", (req, res) => { 
     const taskId = parseInt(req.params.id);
     const task = tasks.find(t => t.id === taskId);
     if (task) {
-        task.completed = !task.completed; // Toggle status
+        task.completed = !task.completed; // ✅ Toggle the task’s status
     }
     res.redirect("/");
 });
 
-// ✅ POST /delete-task/:id - Delete a task by ID
-app.post("/delete-task/:id", (req, res) => {
-    tasks = tasks.filter(task => task.id !== parseInt(req.params.id));
-    res.redirect("/");
+// ✅ PUT /update-task/:id - Update Task Details
+app.put("/update-task/:id", (req, res) => {
+    const taskId = parseInt(req.params.id);
+    const { title, description, priority } = req.body;
+    const task = tasks.find(t => t.id === taskId);
+
+    if (task) {
+        // ✅ Updates only provided fields
+        if (title) task.title = title;
+        if (description) task.description = description;
+        if (priority) task.priority = priority;
+        return res.status(200).json({ message: "Task updated successfully", task });
+    }
+    res.status(404).json({ message: "Task not found" });
 });
 
-// Start Server
+// ✅ DELETE /delete-task/:id - Remove a Task
+app.delete("/delete-task/:id", (req, res) => {
+    const taskId = parseInt(req.params.id);
+    const initialLength = tasks.length;
+    
+    tasks = tasks.filter(task => task.id !== taskId); // ✅ Removes task from array
+
+    if (tasks.length < initialLength) {
+        return res.status(200).json({ message: "Task deleted successfully" });
+    }
+    res.status(404).json({ message: "Task not found" });
+});
+
+// ✅ Start Server
 app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`); //This makes your server start listening for requests
+    console.log(`Server running on http://localhost:${port}`); 
 });
