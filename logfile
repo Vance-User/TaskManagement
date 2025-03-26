@@ -1,0 +1,9 @@
+postgres: could not access the server configuration file "/var/lib/postgresql/16/main/postgresql.conf": No such file or directory
+2025-03-26 02:18:37.574 UTC [21538] LOG:  starting PostgreSQL 16.8 (Ubuntu 16.8-1.pgdg20.04+1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0, 64-bit
+2025-03-26 02:18:37.575 UTC [21538] LOG:  listening on IPv6 address "::1", port 5432
+2025-03-26 02:18:37.575 UTC [21538] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2025-03-26 02:18:37.577 UTC [21538] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2025-03-26 02:18:37.582 UTC [21544] LOG:  database system was shut down at 2025-03-26 02:18:36 UTC
+2025-03-26 02:18:37.588 UTC [21538] LOG:  database system is ready to accept connections
+2025-03-26 02:23:37.673 UTC [21542] LOG:  checkpoint starting: time
+2025-03-26 02:23:46.629 UTC [21542] LOG:  checkpoint complete: wrote 92 buffers (0.6%); 0 WAL file(s) added, 0 removed, 0 recycled; write=8.920 s, sync=0.032 s, total=8.957 s; sync files=51, longest=0.005 s, average=0.001 s; distance=422 kB, estimate=422 kB; lsn=0/154B758, redo lsn=0/154B720

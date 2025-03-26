@@ -1,3 +1,20 @@
+const { Pool } = require("pg");
+
+// PostgreSQL Connection Configuration
+const pool = new Pool({
+    user: "postgres",  // Default PostgreSQL username
+    host: "localhost", // Database server (or use the container name if using Docker)
+    database: "taskdb", // Change to your actual database name
+    password: "school", // Your PostgreSQL password
+    port: 5432,        // Default PostgreSQL port
+});
+
+// Test database connection
+pool.connect()
+    .then(() => console.log("✅ Connected to PostgreSQL Database"))
+    .catch(err => console.error("❌ Database Connection Error:", err));
+
+
 const express = require("express");         // Imports the Express framework
 const bodyParser = require("body-parser");  // Imports body-parser to parse incoming request bodies
 
@@ -14,23 +31,34 @@ app.set("view engine", "ejs"); // Uses EJS templating engine
 let tasks = [];
 
 // ✅ GET / - Display the main page with tasks list and add form
-app.get("/", (req, res) => {                                        
-    res.render("index", { tasks });  // Renders the index.ejs file with task data
+app.get("/", async (req, res) => {
+    try {
+        const result = await pool.query("SELECT * FROM tasks ORDER BY created_at DESC");
+        res.render("index", { tasks: result.rows });
+    } catch (error) {
+        console.error("Error fetching tasks:", error);
+        res.status(500).send("Server Error");
+    }
 });
 
-// ✅ POST /add-task - Add a New Task
-app.post("/add-task", (req, res) => {                             
-    const { title, description, priority } = req.body;          
-    const newTask = {
-        id: tasks.length + 1,  // Generates a unique ID
-        title,                
-        description,          
-        completed: false,     
-        priority: priority || 'normal' // Default to 'normal' if no priority is selected
-    };
-    tasks.push(newTask);  // Adds the new task to the tasks array
-    res.redirect("/");  // Refreshes the page to show the updated task list
+
+app.post("/toggle-task/:id", async (req, res) => {
+    const taskId = parseInt(req.params.id);
+
+    try {
+        await pool.query(
+            "UPDATE tasks SET completed = NOT completed WHERE id = $1",
+            [taskId]
+        );
+
+        res.redirect("/");
+    } catch (error) {
+        console.error("Error toggling task:", error);
+        res.status(500).send("Server Error");
+    }
 });
+
+
 
 // ✅ PATCH /toggle-task/:id - Toggle Completed Status
 app.patch("/toggle-task/:id", (req, res) => { 
@@ -59,17 +87,18 @@ app.put("/update-task/:id", (req, res) => {
 });
 
 // ✅ DELETE /delete-task/:id - Remove a Task
-app.delete("/delete-task/:id", (req, res) => {
+app.post("/delete-task/:id", async (req, res) => {
     const taskId = parseInt(req.params.id);
-    const initialLength = tasks.length;
-    
-    tasks = tasks.filter(task => task.id !== taskId); // ✅ Removes task from array
 
-    if (tasks.length < initialLength) {
-        return res.status(200).json({ message: "Task deleted successfully" });
+    try {
+        await pool.query("DELETE FROM tasks WHERE id = $1", [taskId]);
+        res.redirect("/");
+    } catch (error) {
+        console.error("Error deleting task:", error);
+        res.status(500).send("Server Error");
     }
-    res.status(404).json({ message: "Task not found" });
 });
+
 
 // ✅ Start Server
 app.listen(port, () => {

@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "npm": "^11.2.0",
+    "pg-promise": "^11.13.0"
+  }
+}
