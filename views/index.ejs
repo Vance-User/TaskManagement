@@ -10,24 +10,25 @@
     <div class="container">
         <h1>Task Manager</h1>
 
-        <!-- Display error message if exists -->
-        <% if (error) { %>
-            <div class="error-message"><%= error %></div>
-        <% } %>
-
         <!-- Add Task Form -->
         <form action="/add-task" method="POST" class="task-form">
             <input type="text" name="title" placeholder="Task Title" class="input-field">
+            <% if (errors && errors.includes("Title is required and must be between 3 and 100 characters.")) { %>
+                <div class="error-message">Title is required and must be between 3 and 100 characters.</div>
+            <% } %>
+
             <input type="text" name="description" placeholder="Task Description (Optional)" class="input-field">
-            
+            <% if (errors && errors.includes("Description must not exceed 500 characters.")) { %>
+                <div class="error-message">Description must not exceed 500 characters.</div>
+            <% } %>
+
             <select name="priority" class="input-field" required>
                 <option value="" disabled selected style="color: gray;">Priority</option>
                 <option value="1">Important</option>
                 <option value="2">Highly Important</option>
                 <option value="3">Needs to Get Done Immediately</option>
             </select>
-            
-    
+
             <button type="submit" class="btn-add">Add Task</button>
         </form>
 
@@ -45,13 +46,13 @@
                             Priority: <%= task.priority === 'urgent' ? 'Needs to Get Done Immediately' : 
                                     task.priority === 'high' ? 'Highly Important' : 'Important' %>
                         </p>
-        
+
                         <form action="/toggle-task/<%= task.id %>" method="POST" class="action-form">
                             <button type="submit" class="btn-complete">
                                 <%= task.completed ? "Mark as Incomplete" : "Mark as Complete" %>
                             </button>
                         </form>
-        
+
                         <form action="/delete-task/<%= task.id %>" method="POST" class="action-form">
                             <button type="submit" class="btn-delete">Delete</button>
                         </form>
