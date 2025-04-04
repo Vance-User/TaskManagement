@@ -20,32 +20,28 @@ export const getHome = async (req, res) => {
     });
   } catch (err) {
     console.error("Error in getHome:", err);
-    res.status(500).render("error", {
-      message: "Failed to load tasks",
-      error: process.env.NODE_ENV === "development" ? err : {}
-    });
+    res.status(500).send("Failed to load tasks");
+
   }
 };
 
 // POST /add-task - Add a New Task
 export const createTask = async (req, res) => {
-  const { title, description, priority } = req.body;
-  
-  // Use validation function
-  const errors = validateTask(title, description, priority);
+  // Make sure you have all the necessary fields being passed
+  console.log(req.body); // Debugging line to check the content of req.body
 
-  if (errors.length > 0) {
-      const tasks = await getAllTasks();
-      return res.render("index", { tasks, error: errors.join("<br>") });
-  }
+  const { title, description, priority } = req.body; // Check if you are destructuring the correct properties here
 
   try {
-      await addTask(title.trim(), description?.trim() || "", priority);
-      res.redirect("/");
+    // Call addTask correctly with all three parameters
+    await addTask(title.trim(), description?.trim() || "", priority);
+    res.redirect("/");
   } catch (err) {
-      res.status(500).send("Server error");
+    res.status(500).send("Server error");
   }
 };
+
+
 
 // POST /toggle-task/:id - Toggle Task Completion Status
 export const toggleTask = async (req, res) => {

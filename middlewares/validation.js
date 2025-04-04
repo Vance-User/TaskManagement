@@ -2,7 +2,7 @@
 
 export const validateTask = (req, res, next) => {
     const errors = [];
-    const { title, description } = req.body;
+    const { title, description, priority } = req.body;
 
     // Validate title
     if (!title || typeof title !== "string" || title.trim().length < 3 || title.trim().length > 100) {

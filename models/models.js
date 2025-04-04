@@ -13,17 +13,21 @@ export const getAllTasks = async () => {
 };
 
 // ✅ ADD A NEW TASK
-export const addTask = async (title, description) => {
+export const addTask = async (title, description, priority = 1) => {
   try {
-    return await query(
-      "INSERT INTO tasks (title, description) VALUES ($1, $2) RETURNING *",
-      [title, description]
+    const result = await query(
+      `INSERT INTO tasks (title, description, priority) 
+       VALUES ($1, $2, $3) 
+       RETURNING *`, 
+      [title, description, priority]
     );
+    return result.rows[0]; // Return the inserted task
   } catch (err) {
     console.error("Error in addTask:", err);
     throw err;
   }
 };
+
 
 // ✅ TOGGLE TASK STATUS
 export const toggleTaskStatus = async (taskId) => {

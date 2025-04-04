@@ -1,0 +1,18 @@
+2025-04-04 18:08:17.329 UTC [12424] LOG:  starting PostgreSQL 16.8 (Ubuntu 16.8-1.pgdg20.04+1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0, 64-bit
+2025-04-04 18:08:17.330 UTC [12424] LOG:  listening on IPv6 address "::1", port 5432
+2025-04-04 18:08:17.330 UTC [12424] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2025-04-04 18:08:17.333 UTC [12424] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2025-04-04 18:08:17.356 UTC [12427] LOG:  database system was interrupted; last known up at 2025-04-02 20:14:41 UTC
+2025-04-04 18:08:17.478 UTC [12427] LOG:  database system was not properly shut down; automatic recovery in progress
+2025-04-04 18:08:17.483 UTC [12427] LOG:  redo starts at 0/1A2ACE0
+2025-04-04 18:08:17.483 UTC [12427] LOG:  invalid record length at 0/1A2ADC8: expected at least 24, got 0
+2025-04-04 18:08:17.483 UTC [12427] LOG:  redo done at 0/1A2AD90 system usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+2025-04-04 18:08:17.490 UTC [12425] LOG:  checkpoint starting: end-of-recovery immediate wait
+2025-04-04 18:08:17.497 UTC [12425] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.002 s, sync=0.001 s, total=0.008 s; sync files=2, longest=0.001 s, average=0.001 s; distance=0 kB, estimate=0 kB; lsn=0/1A2ADC8, redo lsn=0/1A2ADC8
+2025-04-04 18:08:17.502 UTC [12424] LOG:  database system is ready to accept connections
+2025-04-04 18:11:34.723 UTC [14716] ERROR:  column "priority" of relation "tasks" does not exist at character 40
+2025-04-04 18:11:34.723 UTC [14716] STATEMENT:  INSERT INTO tasks (title, description, priority) 
+	       VALUES ($1, $2, $3) 
+	       RETURNING *
+2025-04-04 18:13:17.519 UTC [12425] LOG:  checkpoint starting: time
+2025-04-04 18:13:21.550 UTC [12425] LOG:  checkpoint complete: wrote 41 buffers (0.3%); 0 WAL file(s) added, 0 removed, 0 recycled; write=4.009 s, sync=0.018 s, total=4.032 s; sync files=36, longest=0.004 s, average=0.001 s; distance=164 kB, estimate=164 kB; lsn=0/1A54048, redo lsn=0/1A53FF8
