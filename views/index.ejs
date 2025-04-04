@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Task Manager</h1>
+
+        <!-- Display error message if exists -->
+        <% if (error) { %>
+            <div class="error-message"><%= error %></div>
+        <% } %>
+
+        <!-- Add Task Form -->
+        <form action="/add-task" method="POST" class="task-form">
+            <input type="text" name="title" placeholder="Task Title" class="input-field">
+            <input type="text" name="description" placeholder="Task Description (Optional)" class="input-field">
+            
+            <select name="priority" class="input-field" required>
+                <option value="" disabled selected style="color: gray;">Priority</option>
+                <option value="normal">Important</option>
+                <option value="high">Highly Important</option>
+                <option value="urgent">Needs to Get Done Immediately</option>
+            </select>
+    
+            <button type="submit" class="btn-add">Add Task</button>
+        </form>
+
+        <h2>Task List</h2>
+        <ul class="task-list">
+            <% if (tasks.length === 0) { %>
+                <p>No tasks available.</p>
+            <% } else { %>
+                <% tasks.forEach(task => { %>
+                    <li class="task-item <%= task.completed ? 'completed' : '' %>">
+                        <strong><%= task.title %></strong>
+                        <p><%= task.description ? task.description : "No Description" %></p>
+                        
+                        <p class="priority <%= task.priority %>">
+                            Priority: <%= task.priority === 'urgent' ? 'Needs to Get Done Immediately' : 
+                                    task.priority === 'high' ? 'Highly Important' : 'Important' %>
+                        </p>
+        
+                        <form action="/toggle-task/<%= task.id %>" method="POST" class="action-form">
+                            <button type="submit" class="btn-complete">
+                                <%= task.completed ? "Mark as Incomplete" : "Mark as Complete" %>
+                            </button>
+                        </form>
+        
+                        <form action="/delete-task/<%= task.id %>" method="POST" class="action-form">
+                            <button type="submit" class="btn-delete">Delete</button>
+                        </form>
+                    </li>
+                <% }); %>
+            <% } %>
+        </ul>
+    </div>
+</body>
+</html>

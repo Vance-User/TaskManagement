@@ -1,0 +1,144 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #000000; /* Black background */
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+}
+
+.container {
+    width: 90%;
+    max-width: 600px;
+    background-color: #2b2b2b;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+    color: #9b4dca; /* Purple */
+}
+
+h2 {
+    color: #9b4dca;
+}
+
+.task-form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.input-field {
+    padding: 10px;
+    margin: 5px;
+    border: 2px solid #9b4dca; /* Purple border */
+    border-radius: 5px;
+    background-color: #2b2b2b;
+    color: white;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: #9b4dca;
+}
+
+.btn-add, .btn-complete, .btn-delete {
+    padding: 10px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-add {
+    background-color: #9b4dca; /* Purple */
+    color: white;
+    font-weight: bold;
+}
+
+.btn-add:hover {
+    background-color: #7e3a9e; /* Darker purple */
+}
+
+.btn-complete {
+    background-color: #4caf50; /* Green */
+    color: white;
+}
+
+.btn-complete:hover {
+    background-color: #45a049;
+}
+
+.btn-delete {
+    background-color: #f44336; /* Red */
+    color: white;
+}
+
+.btn-delete:hover {
+    background-color: #e53935;
+}
+
+.task-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.task-item {
+    background-color: #333333;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #444444;
+    transition: background-color 0.3s;
+}
+
+.task-item.completed {
+    background-color: #5e5e5e; /* Gray background for completed tasks */
+    text-decoration: line-through; /* Strikethrough text for completed tasks */
+}
+
+.task-item:hover {
+    background-color: #444444;
+}
+
+.action-form {
+    display: inline;
+}
+
+/* Priority Styles */
+.priority {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.priority.normal {
+    color: #9b4dca; /* Purple for Important tasks */
+}
+
+.priority.high {
+    color: #ff9800; /* Orange for Highly Important tasks */
+}
+
+.priority.urgent {
+    color: #f44336; /* Red for Urgent tasks */
+}
+
+select option:disabled {
+    color: gray;  /* Grey color for the placeholder option */
+}
+
+.error-message {
+    background-color: #ffcccc;
+    color: #d8000c;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
